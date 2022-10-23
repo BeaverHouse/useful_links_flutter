@@ -32,6 +32,32 @@ class AuthProvider {
 
   // 로그아웃 함수
   void signOut(BuildContext context) async {
-    await _firebaseAuth.signOut().then((_) => getOkSnackbar(context, "로그아웃 되었습니다."));
+    await _firebaseAuth.signOut().then((_) {
+      getOkSnackbar(context, "로그아웃 되었습니다.");
+    });
+  }
+
+  // 회원가입 함수
+  void register(BuildContext context, String name, String email, String password) async {
+    try {
+      await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password)
+      .then((res) async {
+        await res.user?.updateDisplayName(name)
+        .then((_) async {
+          await _firebaseAuth.signOut().then((_) {
+            Navigator.pop(context);
+            getOkSnackbar(context, "회원가입 되었습니다.");
+          });
+        });
+      });
+    } on FirebaseAuthException catch (e) {
+      String message = "회원가입 오류입니다.";
+      switch (e.code) {
+        case 'email-already-in-use': 
+          message = "이미 사용중인 이메일입니다.";
+          break;
+      }
+      getOkSnackbar(context, message);
+    }
   }
 }

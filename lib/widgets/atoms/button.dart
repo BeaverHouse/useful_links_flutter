@@ -11,7 +11,7 @@ class NormalButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(right: 5, left: 5),
+      padding: const EdgeInsets.all(5.0),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(

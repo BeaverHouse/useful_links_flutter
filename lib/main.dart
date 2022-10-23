@@ -1,11 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'package:useful_links_app/firebase_options.dart';
 import 'package:useful_links_app/providers/auth_provider.dart';
 import 'package:useful_links_app/widgets/pages/home.dart';
 import 'package:useful_links_app/widgets/pages/login.dart';
+import 'package:useful_links_app/widgets/pages/register.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,11 +34,40 @@ class MyApp extends StatelessWidget  {
           initialData: null,
         ),
       ],
-      child: const MaterialApp(
+      child: MaterialApp(
         title: 'Useful Links',
         
-        home: SplashScreen(),
-        
+        home: const SplashScreen(),
+        onGenerateRoute: (settings) {
+          switch (settings.name) {
+            case '/':
+              return PageTransition(
+                child: const HomePage(),
+                type: PageTransitionType.rightToLeftWithFade,
+                settings: settings,
+                duration: const Duration(seconds: 1),
+                reverseDuration: const Duration(seconds: 1),
+              );
+            case '/login':
+              return PageTransition(
+                child: const LoginPage(),
+                type: PageTransitionType.rightToLeftWithFade,
+                settings: settings,
+                duration: const Duration(seconds: 1),
+                reverseDuration: const Duration(seconds: 1),
+              );
+            case '/register':
+              return PageTransition(
+                child: const RegisterPage(),
+                type: PageTransitionType.rightToLeftWithFade,
+                settings: settings,
+                duration: const Duration(seconds: 1),
+                reverseDuration: const Duration(seconds: 1),
+              );
+            default:
+              return null;
+          }
+        },
       ),
     );
   }

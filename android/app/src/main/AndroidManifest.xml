@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.useful_links_app">
    <application
-        android:label="useful_links_app"
+        android:label="유용한 링크"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity
