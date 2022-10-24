@@ -60,4 +60,20 @@ class AuthProvider {
       getOkSnackbar(context, message);
     }
   }
+
+  void sendEmailVerify(BuildContext context) async {
+    try {
+      await _firebaseAuth.currentUser?.sendEmailVerification().then((_) {
+        getOkSnackbar(context, "인증 메일이 발송되었습니다.");
+      });
+    } on FirebaseAuthException catch (e) {
+      String message = "인증 메일 발송 오류입니다.";
+      switch (e.code) {
+        case 'too-many-requests': 
+          message = "짧은 시간 내 메일을 보냈습니다.. 다시 시도해 주세요.";
+          break;
+      }
+      getOkSnackbar(context, message);
+    }
+  }
 }
