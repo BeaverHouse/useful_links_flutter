@@ -16,3 +16,7 @@ String? passwordValidate(String? val) {
 String? nameValidate(String? val) {
   return !matches(val ?? "", r"^[가-힣]+$") ? "잘못된 이름" : null;
 }
+
+String? linkValidate(String? val) {
+  return !isURL(val ?? "", protocols: ["http", "https"]) ? "잘못된 링크" : null;
+}

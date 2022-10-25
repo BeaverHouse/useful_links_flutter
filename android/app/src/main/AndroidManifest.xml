@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.useful_links_app">
+    <uses-permission android:name="android.permission.INTERNET" />
    <application
         android:label="유용한 링크"
         android:name="${applicationName}"

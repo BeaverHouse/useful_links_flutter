@@ -34,8 +34,7 @@ class _EmailVerifyFormState extends State<EmailVerifyForm> {
                 label: "이메일 인증 발송"
               ),
               const SizedBox(height: 50),
-              const Text("인증 완료 후에는 오른쪽 위의 새로고침 버튼을 눌러 주세요."),
-              Text(date),
+              const Text("인증 완료 후에는 오른쪽 위의 새로고침 버튼을 눌러 주세요.")
             ],
           )
         )

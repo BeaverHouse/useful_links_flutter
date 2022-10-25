@@ -1,22 +1,32 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:useful_links_app/utils/snackbar.dart';
 
 class StoreProvider {
   final CollectionReference<Map<String, dynamic>> db;
 
   StoreProvider(this.db);
 
-  getAll(String uid) {
-    db.where("user", isEqualTo: uid)
+  Stream<QuerySnapshot<Map<String, dynamic>>> getAll(String? uid) {
+    return db
+    .where("user", isEqualTo: uid)
     .where("isDeleted", isEqualTo: 0)
-    .get().then((value) {
-      log(value.toString());  
-    });
+    .snapshots();
   }
 
-  Future<void> addData (String name, String link) {
-    return db.add({
+  void addData (BuildContext context, String name, String link) {
+    db.where("link", isEqualTo: link)
+    .get().then((value) {
+      if(value.docs.isNotEmpty) {
+        Navigator.pop(context);
+        getOkSnackbar(context, "같은 링크가 존재합니다.");
+        return;
+      } else {
+        db.add({
+          "user": FirebaseAuth.instance.currentUser?.uid,
           'name': name,
           'link': link,
           'isDeleted': 0,
@@ -24,10 +34,16 @@ class StoreProvider {
         })
         .then((value) {
           String id = value.id;
-          db.doc(id).set({
+          db.doc(id).update({
             'id': id
           });
+          Navigator.pop(context);
+          getOkSnackbar(context, "링크가 추가되었습니다.");
         })
-        .catchError((error) {log("Failed: $error");});
+        .catchError((error) {
+          getOkSnackbar(context, "오류: $error");
+        });
+      }
+    });
   }
 }

@@ -20,6 +20,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final pwCheckController = TextEditingController();
   
   final _formKey = GlobalKey<FormState>();
+  AutovalidateMode autoValidate = AutovalidateMode.disabled;
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +35,7 @@ class _RegisterPageState extends State<RegisterPage> {
               const InfoText(title: "회원가입"),
               Form(
                 key: _formKey,
+                autovalidateMode: autoValidate,
                 child: Column(
                   children: [
                     FormInput(
@@ -76,6 +78,10 @@ class _RegisterPageState extends State<RegisterPage> {
                                   emailController.text, 
                                   pwController.text
                                 );
+                              } else {
+                                setState(() {
+                                  autoValidate = AutovalidateMode.onUserInteraction;
+                                });
                               }
                             }, 
                             label: "회원가입"

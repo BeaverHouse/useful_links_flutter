@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +6,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'package:useful_links_app/firebase_options.dart';
 import 'package:useful_links_app/providers/auth_provider.dart';
+import 'package:useful_links_app/providers/firestore_provider.dart';
 import 'package:useful_links_app/widgets/pages/home.dart';
 import 'package:useful_links_app/widgets/pages/login.dart';
 import 'package:useful_links_app/widgets/pages/register.dart';
@@ -32,6 +34,9 @@ class MyApp extends StatelessWidget  {
           create: (context) =>
               context.read<AuthProvider>().authState,
           initialData: null,
+        ),
+        Provider<StoreProvider>(
+          create: (_) => StoreProvider(FirebaseFirestore.instance.collection("useful_links")),
         ),
       ],
       child: MaterialApp(

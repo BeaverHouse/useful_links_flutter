@@ -19,6 +19,7 @@ class _LoginPageState extends State<LoginPage> {
   final pwController = TextEditingController();
   
   final _formKey = GlobalKey<FormState>();
+  AutovalidateMode autoValidate = AutovalidateMode.disabled;
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +34,7 @@ class _LoginPageState extends State<LoginPage> {
               const InfoText(title: "Useful Links"),
               Form(
                 key: _formKey,
+                autovalidateMode: autoValidate,
                 child: Column(
                   children: [
                     FormInput(
@@ -61,6 +63,10 @@ class _LoginPageState extends State<LoginPage> {
                                   emailController.text, 
                                   pwController.text
                                 );
+                              } else {                                
+                                setState(() {
+                                  autoValidate = AutovalidateMode.onUserInteraction;
+                                });
                               }
                             }, 
                             label: "로그인"

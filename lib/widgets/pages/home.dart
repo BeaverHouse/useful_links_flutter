@@ -4,6 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:useful_links_app/providers/auth_provider.dart';
+import 'package:useful_links_app/utils/snackbar.dart';
+import 'package:useful_links_app/widgets/organisms/add_dialog.dart';
 import 'package:useful_links_app/widgets/organisms/email_verify.dart';
 import 'package:useful_links_app/widgets/organisms/link_view.dart';
 
@@ -37,6 +39,7 @@ class _HomePageState extends State<HomePage> {
               FirebaseAuth.instance.currentUser?.reload();
               setState(() {
                 isVerified = FirebaseAuth.instance.currentUser?.emailVerified;
+                getOkSnackbar(context, "새로고침 되었습니다.");
               });
               log(isVerified.toString());
             },
@@ -54,7 +57,12 @@ class _HomePageState extends State<HomePage> {
       // body: const LinkView(),
       // body: const EmailVerifyForm(),
       floatingActionButton: isVerified! ? FloatingActionButton(
-        onPressed: () {},
+        onPressed: () async {
+          return showDialog<void>(
+            context: context,
+            builder: ((context) => const AddDialog())
+          );
+        },
         child: const Icon(Icons.add),
       ) : null,  
     );
