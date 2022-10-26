@@ -22,7 +22,7 @@ class _HomePageState extends State<HomePage> {
   
   late bool? isVerified;
   late String? name = "???";
-  late Stream<QuerySnapshot<Map<String, dynamic>>>? _stream;
+  late Future<QuerySnapshot<Map<String, dynamic>>>? _stream;
 
   @override
   void initState() {

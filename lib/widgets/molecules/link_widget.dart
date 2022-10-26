@@ -20,11 +20,12 @@ class LinkWidget extends StatefulWidget {
 class _LinkWidgetState extends State<LinkWidget> {
 
   Future<String?> setMeta() async {
-    String myURL = parseUrl(widget.data["link"]);
+    String? myURL = parseUrl(widget.data["link"]);
     
     var data = await MetadataFetch.extract(myURL);
-    if( data?.image != null) {
-      return data?.image;
+    if( data != null) {
+      if (data.image == null) return null;
+      return data.image!.startsWith("http") ? data.image : null;
     } 
     return null;
   }
@@ -32,7 +33,7 @@ class _LinkWidgetState extends State<LinkWidget> {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    String myURL = parseUrl(widget.data["link"]);
+    String? myURL = parseUrl(widget.data["link"]);
     
     return Center(
         child: GestureDetector(

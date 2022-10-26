@@ -10,11 +10,11 @@ class StoreProvider {
 
   StoreProvider(this.db);
 
-  Stream<QuerySnapshot<Map<String, dynamic>>> getAll(String? uid) {
+  Future<QuerySnapshot<Map<String, dynamic>>> getAll(String? uid) {
     return db
     .where("user", isEqualTo: uid)
     .where("isDeleted", isEqualTo: 0)
-    .snapshots();
+    .get();
   }
 
   void addData (BuildContext context, String name, String link) {

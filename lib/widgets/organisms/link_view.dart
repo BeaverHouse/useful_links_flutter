@@ -5,7 +5,7 @@ import 'package:useful_links_app/widgets/molecules/link_widget.dart';
 
 class LinkView extends StatefulWidget {
   
-  final Stream<QuerySnapshot<Map<String, dynamic>>>? stream;
+  final Future<QuerySnapshot<Map<String, dynamic>>>? stream;
 
   const LinkView({super.key, required this.stream});
   
@@ -25,8 +25,8 @@ class _LinkViewState extends State<LinkView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: StreamBuilder(
-        stream: widget.stream,
+      body: FutureBuilder(
+        future: widget.stream,
         builder: ((context, snapshot) {
           return Center(
             child: SingleChildScrollView(
