@@ -7,18 +7,18 @@ import 'package:useful_links_app/utils/snackbar.dart';
 
 class StoreProvider {
   final CollectionReference<Map<String, dynamic>> db;
+  late final Stream<QuerySnapshot<Map<String, dynamic>>> _dataStream  = db
+    .where("user", isEqualTo: FirebaseAuth.instance.currentUser?.uid)
+    .where("isDeleted", isEqualTo: 0)
+    .snapshots();
 
   StoreProvider(this.db);
 
-  Future<QuerySnapshot<Map<String, dynamic>>> getAll(String? uid) {
-    return db
-    .where("user", isEqualTo: uid)
-    .where("isDeleted", isEqualTo: 0)
-    .get();
-  }
+  Stream<QuerySnapshot<Map<String, dynamic>>> get dataStream => _dataStream;
 
   void addData (BuildContext context, String name, String link) {
     db.where("link", isEqualTo: link)
+    .where("user", isEqualTo: FirebaseAuth.instance.currentUser?.uid)
     .get().then((value) {
       if(value.docs.isNotEmpty) {
         Navigator.pop(context);
@@ -45,6 +45,19 @@ class StoreProvider {
           getOkSnackbar(context, "오류: $error");
         });
       }
+    });
+  }
+
+  void updateData (BuildContext context, String id, String name, String link) {
+    db.doc(id).update({
+      'name': name,
+      'link': link,
+    }).then((value) {
+      Navigator.pop(context);
+      getOkSnackbar(context, "링크가 수정되었습니다.");
+    })
+    .catchError((error) {
+      getOkSnackbar(context, "오류: $error");
     });
   }
 }

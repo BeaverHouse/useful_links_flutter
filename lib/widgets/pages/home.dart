@@ -22,13 +22,11 @@ class _HomePageState extends State<HomePage> {
   
   late bool? isVerified;
   late String? name = "???";
-  late Future<QuerySnapshot<Map<String, dynamic>>>? _stream;
 
   @override
   void initState() {
     name = FirebaseAuth.instance.currentUser?.displayName;
     isVerified = FirebaseAuth.instance.currentUser?.emailVerified;
-    _stream = Provider.of<StoreProvider>(context, listen: false).getAll(FirebaseAuth.instance.currentUser?.uid);
     super.initState();
   }
 
@@ -43,7 +41,6 @@ class _HomePageState extends State<HomePage> {
               FirebaseAuth.instance.currentUser?.reload();
               setState(() {
                 isVerified = FirebaseAuth.instance.currentUser?.emailVerified;
-                _stream = Provider.of<StoreProvider>(context, listen: false).getAll(FirebaseAuth.instance.currentUser?.uid);
                 getOkSnackbar(context, "새로고침 되었습니다.");
               });
             },
@@ -57,7 +54,7 @@ class _HomePageState extends State<HomePage> {
           )
         ],
       ),
-      body: isVerified! ? LinkView(stream: _stream) : const EmailVerifyForm(),
+      body: isVerified! ? const LinkView() : const EmailVerifyForm(),
       // body: const LinkView(),
       // body: const EmailVerifyForm(),
       floatingActionButton: isVerified! ? FloatingActionButton(

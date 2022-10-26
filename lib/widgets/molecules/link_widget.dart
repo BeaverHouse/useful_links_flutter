@@ -6,6 +6,7 @@ import 'package:metadata_fetch/metadata_fetch.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:useful_links_app/utils/function.dart';
 import 'package:useful_links_app/utils/snackbar.dart';
+import 'package:useful_links_app/widgets/organisms/upload_dialog.dart';
 
 class LinkWidget extends StatefulWidget {
 
@@ -37,6 +38,16 @@ class _LinkWidgetState extends State<LinkWidget> {
     
     return Center(
         child: GestureDetector(
+        onLongPress:() async {
+          return showDialog<void>(
+            context: context,
+            builder: ((context) => UpdateDialog(
+              id: widget.data["id"],
+              link: widget.data["link"],
+              name: widget.data["name"],
+            ))
+          );
+        },
         onTap: () async {
           log("tapped");
           Uri uri = Uri.parse(myURL);
@@ -48,8 +59,8 @@ class _LinkWidgetState extends State<LinkWidget> {
         },
         child: Container(
           width: width-30,
-          margin: const EdgeInsets.all(1.0),
-          padding: const EdgeInsets.all(6.0),
+          margin: const EdgeInsets.all(2.0),
+          padding: const EdgeInsets.all(3.0),
           decoration: BoxDecoration(border: Border.all()),
           child: Row(
             children: [
@@ -69,16 +80,27 @@ class _LinkWidgetState extends State<LinkWidget> {
                   }),
                 ), 
               ),              
-              const SizedBox(width: 16,),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children:[
-                  Text(widget.data["name"], style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w600)),
-                  const SizedBox(height: 5),
-                  Text(widget.data["link"]),
-                  const SizedBox(height: 3),              
-                  Text("${widget.data["visitCnt"]}번 방문")     
-                ]
+              const SizedBox(width: 15,),
+              SizedBox(
+                  width: width - 140,
+                  child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children:[
+                    Text(
+                      widget.data["name"], 
+                      style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
+                      overflow: TextOverflow.fade,
+                    ),
+                    const SizedBox(height: 5),
+                    Text(
+                      widget.data["link"],
+                      overflow: TextOverflow.fade,
+                      softWrap: false,
+                    ),
+                    const SizedBox(height: 3),              
+                    Text("${widget.data["visitCnt"]}번 방문")     
+                  ]
+                ),
               ),
             ],
           ) 

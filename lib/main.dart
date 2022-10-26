@@ -10,6 +10,7 @@ import 'package:useful_links_app/providers/firestore_provider.dart';
 import 'package:useful_links_app/widgets/pages/home.dart';
 import 'package:useful_links_app/widgets/pages/login.dart';
 import 'package:useful_links_app/widgets/pages/register.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,10 +39,23 @@ class MyApp extends StatelessWidget  {
         Provider<StoreProvider>(
           create: (_) => StoreProvider(FirebaseFirestore.instance.collection("useful_links")),
         ),
+        StreamProvider(
+          create: (context) =>
+              context.read<StoreProvider>().dataStream,
+          initialData: null,
+        ),
       ],
       child: MaterialApp(
         title: 'Useful Links',
-        
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: const [
+          Locale('en', ''),
+          Locale('ko', ''),
+        ],
         home: const SplashScreen(),
         onGenerateRoute: (settings) {
           switch (settings.name) {
