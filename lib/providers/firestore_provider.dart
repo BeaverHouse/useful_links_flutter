@@ -30,7 +30,8 @@ class StoreProvider {
           'name': name,
           'link': link,
           'isDeleted': 0,
-          'visitCnt': 0,          
+          'visitCnt': 0,    
+          'updateTm': Timestamp.now()      
         })
         .then((value) {
           String id = value.id;

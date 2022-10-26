@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.useful_links_app">
     <uses-permission android:name="android.permission.INTERNET" />
-   <application
+    <application
         android:label="유용한 링크"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
@@ -32,4 +32,11 @@
             android:name="flutterEmbedding"
             android:value="2" />
     </application>
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <data android:scheme="https" />
+        </intent>
+    </queries>
 </manifest>

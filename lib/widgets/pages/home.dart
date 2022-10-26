@@ -1,9 +1,11 @@
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:useful_links_app/providers/auth_provider.dart';
+import 'package:useful_links_app/providers/firestore_provider.dart';
 import 'package:useful_links_app/utils/snackbar.dart';
 import 'package:useful_links_app/widgets/organisms/add_dialog.dart';
 import 'package:useful_links_app/widgets/organisms/email_verify.dart';
@@ -20,11 +22,13 @@ class _HomePageState extends State<HomePage> {
   
   late bool? isVerified;
   late String? name = "???";
+  late Stream<QuerySnapshot<Map<String, dynamic>>>? _stream;
 
   @override
   void initState() {
     name = FirebaseAuth.instance.currentUser?.displayName;
     isVerified = FirebaseAuth.instance.currentUser?.emailVerified;
+    _stream = Provider.of<StoreProvider>(context, listen: false).getAll(FirebaseAuth.instance.currentUser?.uid);
     super.initState();
   }
 
@@ -39,9 +43,9 @@ class _HomePageState extends State<HomePage> {
               FirebaseAuth.instance.currentUser?.reload();
               setState(() {
                 isVerified = FirebaseAuth.instance.currentUser?.emailVerified;
+                _stream = Provider.of<StoreProvider>(context, listen: false).getAll(FirebaseAuth.instance.currentUser?.uid);
                 getOkSnackbar(context, "새로고침 되었습니다.");
               });
-              log(isVerified.toString());
             },
             icon: const Icon(Icons.refresh),
           ),
@@ -53,7 +57,7 @@ class _HomePageState extends State<HomePage> {
           )
         ],
       ),
-      body: isVerified! ? const LinkView() : const EmailVerifyForm(),
+      body: isVerified! ? LinkView(stream: _stream) : const EmailVerifyForm(),
       // body: const LinkView(),
       // body: const EmailVerifyForm(),
       floatingActionButton: isVerified! ? FloatingActionButton(
