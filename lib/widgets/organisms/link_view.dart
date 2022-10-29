@@ -41,8 +41,15 @@ class _LinkViewState extends State<LinkView> {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                const SizedBox(height: 10),
+                const Center(
+                  child: Text("수정 : 꾹 누르세요!"),
+                ),
+                const Center(
+                  child: Text("삭제 : 왼쪽으로 드래그!"),
+                ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0),
+                  padding: const EdgeInsets.only(top: 15.0, left: 20.0, right: 20.0),
                   child: TextField(
                     controller: searchController,
                     onChanged: ((value) {
@@ -59,7 +66,7 @@ class _LinkViewState extends State<LinkView> {
                   )
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0),
+                  padding: const EdgeInsets.only(top: 5.0, left: 20.0, right: 20.0),
                   child: DropdownButtonHideUnderline(
                     child: DropdownButton2(
                       hint: Text(
