@@ -91,6 +91,6 @@ class _UpdateDialogState extends State<UpdateDialog> {
               },
             ),
           ],
-        );;
+        );
   }
 }

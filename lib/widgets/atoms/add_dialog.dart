@@ -80,6 +80,6 @@ class _AddDialogState extends State<AddDialog> {
               },
             ),
           ],
-        );;
+        );
   }
 }

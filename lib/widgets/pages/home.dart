@@ -1,13 +1,10 @@
-import 'dart:developer';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:useful_links_app/providers/auth_provider.dart';
-import 'package:useful_links_app/providers/firestore_provider.dart';
 import 'package:useful_links_app/utils/snackbar.dart';
-import 'package:useful_links_app/widgets/organisms/add_dialog.dart';
+import 'package:useful_links_app/widgets/atoms/add_dialog.dart';
+import 'package:useful_links_app/widgets/atoms/confirm_dialog.dart';
 import 'package:useful_links_app/widgets/organisms/email_verify.dart';
 import 'package:useful_links_app/widgets/organisms/link_view.dart';
 
@@ -47,8 +44,17 @@ class _HomePageState extends State<HomePage> {
             icon: const Icon(Icons.refresh),
           ),
           IconButton(
-            onPressed: () {
-              Provider.of<AuthProvider>(context, listen: false).signOut(context);
+            onPressed: () async {
+              return showDialog<void>(
+                context: context,
+                builder: ((context) => ConfirmDialog(
+                  confirmMsg: "로그아웃 하시겠어요?", 
+                  confirmFunc: () {
+                    Provider.of<AuthProvider>(context, listen: false).signOut(context);
+                    Navigator.of(context).pop();
+                  })
+                )
+              );
             },
             icon: const Icon(Icons.power_settings_new),
           )
